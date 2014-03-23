@@ -2,10 +2,13 @@
 Authors: Fraser McCrossan
          Alfredo Pironti
          Torben S.
-Tested on G9, A2000, should work on most cameras.
 
 An accurate intervalometer script, with pre-focus and screen power off options.
 http://chdk.wikia.com/wiki/Lua/Scripts:_Accurate_Intervalometer_with_power-saving_and_pre-focus
+
+Tested on G9, A2000, should work on most cameras.
+
+Requires CHDK version 1.2 (depends on set_lcd_display())
 
 Features:
  - Takes as input frame interval plus total desired run-time (or "endless")
