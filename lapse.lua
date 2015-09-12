@@ -65,13 +65,13 @@ end
 auto_display_off = (display_off_after > 0) -- set to false as soon as the display status is altered
 display_status = 1
 
-function display_on ()
+function display_on()
   set_lcd_display(1)
   display_status = 1
   auto_display_off = false
 end
 
-function display_off ()
+function display_off()
   set_lcd_display(0)
   display_status = 0
 end
@@ -211,7 +211,7 @@ if focus_at_start then
     while refocus do
       print("Press SET to focus again")
       print("or shooting will start in 1 second")
-      refocus = wait_button(1000,"set")
+      refocus = wait_button(1000, "set")
       release("shoot_half")
       if refocus then
         got_focus = pre_focus()
@@ -232,7 +232,7 @@ end
 ticks_per_frame, total_frames = calculate_parameters(secs_frame, hours, minutes)
 
 frame = 1
-display_off_frame = frame + display_off_after
+display_off_frame = display_off_after
 
 print "Press SET to exit"
 
@@ -250,6 +250,7 @@ while endless or frame <= total_frames do
   end
   shoot()
   if frame_delay(frame, start_ticks, ticks_per_frame, total_frames) then
+    display_on()
     print "User quit"
     break
   end
