@@ -41,7 +41,7 @@ Features:
 --]]
 
 -- convert parameters into readable variable names
-secs_frame, hours, minutes, endless, focus_at_start, display_off_frame = s, h, m, (e == 1), (f == 1), d
+secs_frame, hours, minutes, endless, focus_at_start, display_off_after = s, h, m, (e == 1), (f == 1), d
 
 -- sanitize parameters
 if secs_frame <= 0 then
@@ -53,8 +53,8 @@ end
 if minutes <= 0 then
   minutes = 1
 end
-if display_off_frame < 0 then
-  display_off_frame = 0
+if display_off_after < 0 then
+  display_off_after = 0
 end
 
 
@@ -62,7 +62,7 @@ end
 -- 0 turn off
 -- 1 turn on
 
-auto_display_off = (display_off_frame > 0) -- set to false as soon as the display status is altered
+auto_display_off = (display_off_after > 0) -- set to false as soon as the display status is altered
 display_status = 1
 
 function display_on ()
@@ -74,7 +74,6 @@ end
 function display_off ()
   set_lcd_display(0)
   display_status = 0
-  auto_display_off = false
 end
 
 function display_toggle()
@@ -141,6 +140,9 @@ function frame_delay (frame, start_ticks, ticks_per_frame, total_frames)
   while next_frame_sleep (frame, start_ticks, ticks_per_frame, total_frames) do
     -- honour the display button
     if is_key("display") then
+      -- reset the display-off counter; if it was enabled, we want the display to shut down again
+      -- once the user is done looking at it.
+      display_off_frame = frame + display_off_after
       display_toggle()
     end
     -- if set key is pressed, indicate that we should stop
@@ -230,6 +232,7 @@ end
 ticks_per_frame, total_frames = calculate_parameters(secs_frame, hours, minutes)
 
 frame = 1
+display_off_frame = frame + display_off_after
 
 print "Press SET to exit"
 
